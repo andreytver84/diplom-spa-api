@@ -10,8 +10,8 @@ export default function HallConfStep() {
   const [places, setPlaces] = useState(5);
   const [hallid, setHallid] = useState();
   const [hallname, setHallname] = useState("Зал 1");
-  const [valfromdb, setValfromdb] = useState();
-  //const [hallsobj, setHallsobj] = useState([]);
+  const [data, setData] = useState();
+  //const [isChecked, setIsChecked]=useState(false)
 
   const refInputRows = useRef();
   const refInputPlaces = useRef();
@@ -21,16 +21,15 @@ export default function HallConfStep() {
       .get("http://localhost:80/api/hallconf.php")
       .then((response) => {
         setHallid(response.data[0].hall_id);
-        setValfromdb(JSON.parse(response.data[0].conf));
+        setData(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  //console.log(valfromdb);
-  const changeHallHandler = (id, name) => {
-    //setHallid(event.target.getAttribute("data-id"));
+  console.log(data);
+  const changeHallHandler = (id, name, index) => {
     setHallid(id);
     setHallname(name);
   };
@@ -86,7 +85,7 @@ export default function HallConfStep() {
 
     return hall;
   };
-  //console.log(renderHall());
+
   const newConfhall = renderHall();
 
   /*   useEffect(() => {
@@ -95,7 +94,6 @@ export default function HallConfStep() {
 
   const changeClassHandler = (row, place, classes) => {
     newConfhall[row][place].classes = "conf-step__chair " + classes;
-    console.log(newConfhall);
   };
 
   return (
@@ -111,7 +109,7 @@ export default function HallConfStep() {
                   name={hall.name}
                   id={hall.id}
                   onChange={changeHallHandler}
-                  isChecked={hallid == hall.id}
+                  isChecked={index == 0}
                 />
                 <span className="conf-step__selector">{hall.name}</span>
               </li>
