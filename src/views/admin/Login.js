@@ -16,7 +16,7 @@ export default function Login() {
     };
 
     axios
-      .post("http://localhost:80/api/login", payload)
+      .post("http://localhost:80/api/login.php", payload)
       .then(({ data }) => {
         setToken(data.token);
       })

@@ -1,7 +1,7 @@
 import React, { Children, useRef } from "react";
 
 export default function ConfStep(props) {
-  const { title, paragraph, children } = props;
+  const { title, children } = props;
 
   const headersRef = useRef([]);
   const accordionClickHandler = () => {
@@ -17,10 +17,7 @@ export default function ConfStep(props) {
       >
         <h2 className="conf-step__title">{title}</h2>
       </header>
-      <div className="conf-step__wrapper">
-        <p className="conf-step__paragraph">{paragraph}:</p>
-        {children}
-      </div>
+      {children}
     </section>
   );
 }

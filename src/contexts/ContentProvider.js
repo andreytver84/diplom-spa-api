@@ -4,10 +4,13 @@ import React from "react";
 const StateContext = createContext({
   token: null,
   setToken: () => {},
+  halls: null,
+  setHalls: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
   const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
+  const [halls, setHalls] = useState([]);
 
   const setToken = (token) => {
     _setToken(token);
@@ -23,6 +26,8 @@ export const ContextProvider = ({ children }) => {
       value={{
         token,
         setToken,
+        halls,
+        setHalls,
       }}
     >
       {children}
