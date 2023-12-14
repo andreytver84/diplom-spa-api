@@ -1,0 +1,66 @@
+.modal {
+  background: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: 0.3s all;
+  pointer-events: none;
+}
+
+.modal.active {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  transform: scale(0.5);
+  transition: 0.4s all;
+  max-width: 450px;
+  position: relative;
+}
+
+.modal-content.active {
+  transform: scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #000;
+  cursor: pointer;
+}
+
+form {
+  transform: scale(0.5);
+  transition: 0.3s all;
+}
+
+.modal-content.active form {
+  transform: scale(1);
+}
+
+.modal.active h2 {
+  margin-bottom: 15px;
+}
+
+.modal.active .conf-step__wrap {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.modal.active .conf-step__wrap input,
+.modal.active label,
+.modal.active textarea {
+  width: 100%;
+}

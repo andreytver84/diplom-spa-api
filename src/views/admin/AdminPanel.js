@@ -3,6 +3,7 @@ import ConfStep from "./ConfStep";
 import HallCreateStep from "./HallCreateStep";
 import HallConfStep from "./HallConfStep";
 import HallPriceStep from "./HallPriceStep";
+import SeansConfStep from "./SeansConfStep";
 
 export default function AdminPanel() {
   return (
@@ -15,6 +16,9 @@ export default function AdminPanel() {
       </ConfStep>
       <ConfStep title={"Конфигурация цен"}>
         <HallPriceStep />
+      </ConfStep>
+      <ConfStep title={"Сетка сеансов"}>
+        <SeansConfStep />
       </ConfStep>
     </main>
   );
