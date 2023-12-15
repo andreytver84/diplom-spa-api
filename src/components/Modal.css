@@ -23,6 +23,7 @@
   padding: 20px;
   border-radius: 10px;
   background: #fff;
+  min-width: 350px;
   transform: scale(0.5);
   transition: 0.4s all;
   max-width: 450px;
