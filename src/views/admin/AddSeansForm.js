@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useStateContext } from "../../contexts/ContentProvider";
 import InputHall from "./InputHall";
 
-export default function AddSeansForm({ addHandler, filmsData }) {
+export default function AddSeansForm({ addHandler, filmsData, removeHandler }) {
   const { halls } = useStateContext();
   const [hallid, setHallid] = useState(1);
   const [hallname, setHallname] = useState("Зал 1");
@@ -22,6 +22,15 @@ export default function AddSeansForm({ addHandler, filmsData }) {
 
   const startHandleChange = (e) => {
     setStartSession(startRef.current.value);
+  };
+
+  const onRemoveHandler = (e) => {
+    e.preventDefault();
+    setMessage("Фильм удалён");
+    setTimeout(() => {
+      removeHandler(filmsData.id);
+      setMessage();
+    }, 1000);
   };
 
   const submitHandler = (e) => {
@@ -89,6 +98,13 @@ export default function AddSeansForm({ addHandler, filmsData }) {
             className="conf-step__button conf-step__button-accent"
           >
             Создать
+          </button>
+          <button
+            type="button"
+            onClick={onRemoveHandler}
+            className="conf-step__button conf-step__button-regular"
+          >
+            Удалить фильм
           </button>
         </form>
       ) : (

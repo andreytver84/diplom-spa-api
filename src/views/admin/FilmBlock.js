@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export default function FilmBlock({ filmData }) {
+export default function FilmBlock({ filmData, clickHandler, indexFilm }) {
+  const removeBlockHandler = () => {
+    clickHandler(indexFilm, filmData.index);
+  };
+
   const withBlock = +filmData.film_time / (1440 / 100) + "%";
 
   const time = filmData.start_Session;
@@ -13,6 +17,7 @@ export default function FilmBlock({ filmData }) {
   const colorNumb = filmData.film_id;
   return (
     <div
+      onClick={removeBlockHandler}
       className="conf-step__seances-movie"
       style={{
         width: withBlock,

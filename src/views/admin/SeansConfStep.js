@@ -17,6 +17,25 @@ export default function SeansConfStep() {
 
   const handl = () => {
     setModalActive(false);
+    fetchFilms();
+  };
+
+  const removeFilmBlockHandler = (indexFilm, hallindex) => {
+    const removeItemByIndex = (arr, arrayIndex, itemIndex) => {
+      return arr.map((subArr, i) => {
+        if (i === arrayIndex) {
+          return subArr.filter((item, j) => j !== itemIndex);
+        }
+        return subArr;
+      });
+    };
+
+    const updatedSessionsData = removeItemByIndex(
+      sessionsData,
+      hallindex,
+      indexFilm
+    );
+    setSessionsData(updatedSessionsData);
   };
 
   const handlSeans = (newData) => {
@@ -44,7 +63,29 @@ export default function SeansConfStep() {
     });
   };
 
-  useEffect(() => {
+  const removeFilmHandler = (id) => {
+    setFilms((prevFilms) => prevFilms.filter((film) => film.id !== id));
+    setModalActiveSeans(false);
+
+    const removeItemById = (arr, id) =>
+      arr.filter((item) => item.film_id !== id);
+    const updatedSessionsData = sessionsData.map((arr) =>
+      removeItemById(arr, id)
+    );
+    setSessionsData(updatedSessionsData);
+
+    axios
+      .delete(`http://localhost:80/api/films.php?id=${id}`)
+      .then((response) => {
+        //console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  //console.log(sessionsData);
+  //console.log(films);
+  const fetchFilms = () => {
     axios
       .get("http://localhost:80/api/films.php")
       .then(({ data }) => {
@@ -54,6 +95,10 @@ export default function SeansConfStep() {
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  useEffect(() => {
+    fetchFilms();
   }, []);
   return (
     <>
@@ -85,7 +130,11 @@ export default function SeansConfStep() {
           {halls.map((hall, index) => (
             <div key={index + hall.name} className="conf-step__seances-hall">
               <h3 className="conf-step__seances-title">{hall.name}</h3>
-              <SessionHall hallData={sessionsData[index]} />
+              <SessionHall
+                removeFilm={removeFilmHandler}
+                hallData={sessionsData[index]}
+                removeBlock={removeFilmBlockHandler}
+              />
             </div>
           ))}
         </div>
@@ -105,7 +154,11 @@ export default function SeansConfStep() {
         <AddFilmForm addHandler={handl} />
       </Modal>
       <Modal active={modalActiveSeans} setActive={setModalActiveSeans}>
-        <AddSeansForm filmsData={filmsData} addHandler={handlSeans} />
+        <AddSeansForm
+          filmsData={filmsData}
+          addHandler={handlSeans}
+          removeHandler={removeFilmHandler}
+        />
       </Modal>
     </>
   );
