@@ -60,11 +60,11 @@ export default function HallConfStep() {
   };
 
   const handleChangeRows = () => {
-    setRows(refInputRows.current.value);
+    setRows(+refInputRows.current.value);
   };
 
   const handleChangePlaces = () => {
-    setPlaces(refInputPlaces.current.value);
+    setPlaces(+refInputPlaces.current.value);
   };
 
   const hall = [];
@@ -86,11 +86,22 @@ export default function HallConfStep() {
     return hall;
   };
 
-  const newConfhall = renderHall();
+  let newConfhall = renderHall();
 
-  /*   useEffect(() => {
-    setHallsobj(newConfhall);
-  }, []); */
+  useEffect(() => {
+    newConfhall = renderHall();
+    console.log("render");
+    console.log(rows);
+  }, [rows, places]);
+
+  const foundHall = data?.find((hall) => hall.hall_id === hallid);
+
+  if (foundHall) {
+    //console.log(foundHall.num_rows);
+    //let numb = foundHall.num_rows;
+    //setRows(numb);
+    newConfhall = JSON.parse(foundHall?.conf);
+  }
 
   const changeClassHandler = (row, place, classes) => {
     newConfhall[row][place].classes = "conf-step__chair " + classes;
