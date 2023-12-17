@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 export default function InputHall(props) {
-  //const [isChecked, setIsChecked] = useState(false);
-
   const changeHandler = () => {
     props.onChange(props.id, props.name, props.index);
   };
 
-  /*   if (props.index == 0) {
-    setIsChecked(true);
-  } */
-
-  //console.log(props.isChecked);
+  const onClickHandler = () => {
+    props.onClick();
+  };
 
   return (
     <input
@@ -19,8 +15,9 @@ export default function InputHall(props) {
       className="conf-step__radio"
       name="chairs-hall"
       value={props.name}
-      defaultChecked={props.isChecked}
       onChange={changeHandler}
+      defaultChecked={props.isChecked}
+      onClick={onClickHandler}
     />
   );
 }

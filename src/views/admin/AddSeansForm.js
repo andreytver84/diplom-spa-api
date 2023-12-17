@@ -10,6 +10,7 @@ export default function AddSeansForm({ addHandler, filmsData, removeHandler }) {
   const [startSession, setStartSession] = useState();
   const [index, setIndex] = useState(0);
   const startRef = useRef();
+  const [isClicked, setIsClicked] = useState(false);
 
   const changeHallHandler = (id, name, index) => {
     //setHallid(event.target.getAttribute("data-id"));
@@ -73,7 +74,8 @@ export default function AddSeansForm({ addHandler, filmsData, removeHandler }) {
                     index={index}
                     name={hall.name}
                     id={hall.id}
-                    isChecked={index == 0}
+                    isChecked={!isClicked ? index == 0 : false}
+                    onClick={() => setIsClicked(true)}
                     onChange={changeHallHandler}
                   />
                   <span className="conf-step__selector">{hall.name}</span>

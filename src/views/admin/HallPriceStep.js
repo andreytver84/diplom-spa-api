@@ -11,12 +11,12 @@ export default function HallCreateStep() {
   const [vipPrice, setVipPrice] = useState(350);
   const [data, setData] = useState();
   const [objectIndex, setObjectIndex] = useState(0);
+  const [isClicked, setIsClicked] = useState(false);
 
   const standartInput = useRef();
   const vipInput = useRef();
 
   const changeHallHandler = (id, name, index) => {
-    //setHallid(event.target.getAttribute("data-id"));
     setHallid(id);
     setHallname(name);
     if (data && data[index]) {
@@ -110,7 +110,8 @@ export default function HallCreateStep() {
                   index={index}
                   name={hall.name}
                   id={hall.id}
-                  isChecked={index == 0}
+                  isChecked={!isClicked ? index == 0 : false}
+                  onClick={() => setIsClicked(true)}
                   onChange={changeHallHandler}
                 />
                 <span className="conf-step__selector">{hall.name}</span>

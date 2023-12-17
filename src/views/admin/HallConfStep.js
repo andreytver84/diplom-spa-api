@@ -11,7 +11,7 @@ export default function HallConfStep() {
   const [hallid, setHallid] = useState();
   const [hallname, setHallname] = useState("Зал 1");
   const [data, setData] = useState();
-  //const [isChecked, setIsChecked]=useState(false)
+  const [isClicked, setIsClicked] = useState(false);
 
   const refInputRows = useRef();
   const refInputPlaces = useRef();
@@ -103,13 +103,14 @@ export default function HallConfStep() {
         {halls.length < 1
           ? "Нет залов"
           : halls.map((hall, index) => (
-              <li key={hall.id}>
+              <li key={hall.id + index}>
                 <InputHall
                   index={index}
                   name={hall.name}
                   id={hall.id}
                   onChange={changeHallHandler}
-                  isChecked={index == 0}
+                  isChecked={!isClicked ? index == 0 : false}
+                  onClick={() => setIsClicked(true)}
                 />
                 <span className="conf-step__selector">{hall.name}</span>
               </li>
