@@ -74,7 +74,7 @@ export default function AddSeansForm({ addHandler, filmsData, removeHandler }) {
                     index={index}
                     name={hall.name}
                     id={hall.id}
-                    isChecked={!isClicked ? index == 0 : false}
+                    isChecked={!isClicked ? index === 0 : false}
                     onClick={() => setIsClicked(true)}
                     onChange={changeHallHandler}
                   />

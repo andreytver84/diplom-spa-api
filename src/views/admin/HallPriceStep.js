@@ -1,17 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useStateContext } from "../../contexts/ContentProvider";
 import axios from "axios";
-import InputHall from "./InputHall";
+import SelectHall from "./SelectHall";
 
 export default function HallCreateStep() {
-  const { halls } = useStateContext();
   const [hallid, setHallid] = useState();
   const [hallname, setHallname] = useState("Зал 1");
   const [standartPrice, setStandartPrice] = useState(200);
   const [vipPrice, setVipPrice] = useState(350);
   const [data, setData] = useState();
   const [objectIndex, setObjectIndex] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
 
   const standartInput = useRef();
   const vipInput = useRef();
@@ -60,9 +57,9 @@ export default function HallCreateStep() {
       .get("http://localhost:80/api/priceconf.php")
       .then((response) => {
         if (response.data[0]) {
-          setHallid(response.data[0].hall_id);
-          setStandartPrice(response.data[0].standart_price);
-          standartInput.current.value = response.data[0].standart_price;
+          setHallid(response.data[0]?.hall_id);
+          setStandartPrice(response.data[0]?.standart_price);
+          standartInput.current.value = response.data[0]?.standart_price;
           setData(response.data);
         }
         if (response.data[0]) {
@@ -100,7 +97,9 @@ export default function HallCreateStep() {
 
   return (
     <div className="conf-step__wrapper">
-      <p className="conf-step__paragraph">Выберите зал для конфигурации:</p>
+      <SelectHall ChangeHandler={changeHallHandler} />
+
+      {/* <p className="conf-step__paragraph">Выберите зал для конфигурации:</p>
       <ul className="conf-step__selectors-box">
         {halls.length < 1
           ? "Нет залов"
@@ -117,7 +116,7 @@ export default function HallCreateStep() {
                 <span className="conf-step__selector">{hall.name}</span>
               </li>
             ))}
-      </ul>
+      </ul> */}
 
       <p className="conf-step__paragraph">Установите цены для типов кресел:</p>
       <div className="conf-step__legend">

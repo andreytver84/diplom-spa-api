@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useStateContext } from "../../contexts/ContentProvider";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import Place from "./Place";
-import InputHall from "./InputHall";
 import axios from "axios";
+import SelectHall from "./SelectHall";
+import { useStateContext } from "../../contexts/ContentProvider";
 
 export default function HallConfStep() {
   const { halls } = useStateContext();
@@ -11,7 +11,7 @@ export default function HallConfStep() {
   const [hallid, setHallid] = useState();
   const [hallname, setHallname] = useState("Зал 1");
   const [data, setData] = useState();
-  const [isClicked, setIsClicked] = useState(false);
+  const [newConfHall, setNewConfHall] = useState([]);
 
   const refInputRows = useRef();
   const refInputPlaces = useRef();
@@ -20,14 +20,25 @@ export default function HallConfStep() {
     axios
       .get("http://localhost:80/api/hallconf.php")
       .then((response) => {
-        setHallid(response.data[0].hall_id);
-        setData(response.data);
+        if (response.data[0]) {
+          setHallid(response.data[0]?.hall_id);
+          setData(response.data);
+        }
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
+  if (hallid) {
+    const selectedHall = data?.find((hall) => hall.hall_id === hallid);
+    /*     if (selectedHall) {
+      setNewConfHall(JSON.parse(selectedHall.conf));
+    } */
+  }
+  if (!hallid && halls[0]) {
+    setHallid(halls[0].id);
+  }
   //console.log(data);
   const changeHallHandler = (id, name, index) => {
     setHallid(id);
@@ -39,7 +50,7 @@ export default function HallConfStep() {
 
     axios
       .post("http://localhost:80/api/hallconf.php", {
-        html: JSON.stringify(newConfhall),
+        html: JSON.stringify(newConfHall),
         id: hallid,
         name: hallname,
         rows: rows,
@@ -86,47 +97,17 @@ export default function HallConfStep() {
     return hall;
   };
 
-  let newConfhall = renderHall();
-
   useEffect(() => {
-    newConfhall = renderHall();
-    console.log("render");
-    console.log(rows);
+    setNewConfHall(renderHall());
   }, [rows, places]);
 
-  const foundHall = data?.find((hall) => hall.hall_id === hallid);
-
-  if (foundHall) {
-    //console.log(foundHall.num_rows);
-    //let numb = foundHall.num_rows;
-    //setRows(numb);
-    newConfhall = JSON.parse(foundHall?.conf);
-  }
-
   const changeClassHandler = (row, place, classes) => {
-    newConfhall[row][place].classes = "conf-step__chair " + classes;
+    newConfHall[row][place].classes = "conf-step__chair " + classes;
   };
 
   return (
     <div className="conf-step__wrapper">
-      <p className="conf-step__paragraph">Выберите зал для конфигурации:</p>
-      <ul className="conf-step__selectors-box">
-        {halls.length < 1
-          ? "Нет залов"
-          : halls.map((hall, index) => (
-              <li key={hall.id + index}>
-                <InputHall
-                  index={index}
-                  name={hall.name}
-                  id={hall.id}
-                  onChange={changeHallHandler}
-                  isChecked={!isClicked ? index == 0 : false}
-                  onClick={() => setIsClicked(true)}
-                />
-                <span className="conf-step__selector">{hall.name}</span>
-              </li>
-            ))}
-      </ul>
+      <SelectHall ChangeHandler={changeHallHandler} />
       <p className="conf-step__paragraph">
         Укажите количество рядов и максимальное количество кресел в ряду:
       </p>
@@ -170,7 +151,7 @@ export default function HallConfStep() {
 
       <div className="conf-step__hall">
         <div className="conf-step__hall-wrapper">
-          {newConfhall.map((row, i) => (
+          {newConfHall.map((row, i) => (
             <div key={i} className="conf-step__row">
               {row.map((place, j) => (
                 <Place
