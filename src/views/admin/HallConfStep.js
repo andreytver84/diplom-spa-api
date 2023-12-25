@@ -30,12 +30,15 @@ export default function HallConfStep() {
       });
   }, []);
 
-  if (hallid) {
-    const selectedHall = data?.find((hall) => hall.hall_id === hallid);
-    /*     if (selectedHall) {
-      setNewConfHall(JSON.parse(selectedHall.conf));
-    } */
-  }
+  useEffect(() => {
+    if (hallid) {
+      const selectedHall = data?.find((hall) => hall.hall_id === hallid);
+      if (selectedHall) {
+        setNewConfHall(JSON.parse(selectedHall.conf));
+      }
+    }
+  }, [hallid]);
+
   if (!hallid && halls[0]) {
     setHallid(halls[0].id);
   }
