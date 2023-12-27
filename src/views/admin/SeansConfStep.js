@@ -6,6 +6,7 @@ import axios from "axios";
 import AddSeansForm from "./AddSeansForm";
 import { useStateContext } from "../../contexts/ContentProvider";
 import SessionHall from "./SessionHall";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function SeansConfStep() {
   const { halls } = useStateContext();
@@ -75,7 +76,7 @@ export default function SeansConfStep() {
     setSessionsData(updatedSessionsData);
 
     axios
-      .delete(`http://localhost:80/api/films.php?id=${id}`)
+      .delete(`${BASE_URL}api/films.php?id=${id}`)
       .then((response) => {
         //console.log(response.data);
       })
@@ -87,7 +88,7 @@ export default function SeansConfStep() {
   //console.log(films);
   const fetchFilms = () => {
     axios
-      .get("http://localhost:80/api/films.php")
+      .get(`${BASE_URL}api/films.php`)
       .then(({ data }) => {
         //console.log(data);
         setFilms(data);

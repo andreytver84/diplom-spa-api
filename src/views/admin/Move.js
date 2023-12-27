@@ -1,7 +1,8 @@
 import React from "react";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function Move({ clickMove, id, title, time, image }) {
-  const imgsrc = "http://localhost:80/api/" + image;
+  const imgsrc = `${BASE_URL}api/` + image;
 
   const onClickHandler = () => {
     clickMove(id, title, time);

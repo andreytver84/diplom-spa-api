@@ -3,6 +3,7 @@ import Place from "./Place";
 import axios from "axios";
 import SelectHall from "./SelectHall";
 import { useStateContext } from "../../contexts/ContentProvider";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function HallConfStep() {
   const { halls } = useStateContext();
@@ -18,7 +19,7 @@ export default function HallConfStep() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:80/api/hallconf.php")
+      .get(`${BASE_URL}api/hallconf.php`)
       .then((response) => {
         if (response.data[0]) {
           setHallid(response.data[0]?.hall_id);
@@ -52,7 +53,7 @@ export default function HallConfStep() {
     event.preventDefault();
 
     axios
-      .post("http://localhost:80/api/hallconf.php", {
+      .post(`${BASE_URL}api/hallconf.php`, {
         html: JSON.stringify(newConfHall),
         id: hallid,
         name: hallname,

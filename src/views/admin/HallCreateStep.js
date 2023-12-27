@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useStateContext } from "../../contexts/ContentProvider";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function HallCreateStep() {
   const refInput = useRef();
@@ -19,7 +20,7 @@ export default function HallCreateStep() {
   // Загрузка списка кинозалов из базы данных
   const fetchHalls = async () => {
     try {
-      const response = await axios.get("http://localhost:80/api/halls.php");
+      const response = await axios.get(`${BASE_URL}api/halls.php`);
       setHalls(response.data);
     } catch (error) {
       console.error(error);
@@ -30,7 +31,7 @@ export default function HallCreateStep() {
   const deleteHall = async (hallId) => {
     console.log(hallId);
     try {
-      await axios.delete(`http://localhost:80/api/halls.php?id=${hallId}`);
+      await axios.delete(`${BASE_URL}api/halls.php?id=${hallId}`);
       fetchHalls();
     } catch (error) {
       console.error(error);
@@ -41,7 +42,7 @@ export default function HallCreateStep() {
   const createHall = async () => {
     try {
       console.log(refInput.current.value);
-      await axios.post("http://localhost:80/api/halls.php", {
+      await axios.post(`${BASE_URL}api/halls.php`, {
         name: refInput.current.value,
       });
       setNewHallName("");

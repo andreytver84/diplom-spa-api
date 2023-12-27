@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useStateContext } from "../../contexts/ContentProvider";
 import axios from "axios";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function Login() {
   const emailRef = useRef();
@@ -16,7 +17,7 @@ export default function Login() {
     };
 
     axios
-      .post("http://localhost:80/api/login.php", payload)
+      .post(`${BASE_URL}api/login.php`, payload)
       .then(({ data }) => {
         setToken(data.token);
       })

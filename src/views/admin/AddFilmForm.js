@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function AddFilmForm({ addHandler }) {
   const [message, setMessage] = useState();
@@ -35,7 +36,7 @@ export default function AddFilmForm({ addHandler }) {
     formData.append("file-film", form["file-film"]);
 
     axios
-      .post("http://localhost:80/api/films.php", formData, {
+      .post(`${BASE_URL}api/films.php`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

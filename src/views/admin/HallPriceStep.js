@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import SelectHall from "./SelectHall";
 import { useStateContext } from "../../contexts/ContentProvider";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function HallCreateStep() {
   const { halls } = useStateContext();
@@ -48,7 +49,7 @@ export default function HallCreateStep() {
   };
   const getFetch = () => {
     axios
-      .get("http://localhost:80/api/priceconf.php")
+      .get(`${BASE_URL}api/priceconf.php`)
       .then((response) => {
         if (response.data[0]) {
           setHallid(response.data[0]?.hall_id);
@@ -94,7 +95,7 @@ export default function HallCreateStep() {
   const handleSaveSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:80/api/priceconf.php", {
+      .post(`${BASE_URL}api/priceconf.php`, {
         id: hallid,
         name: hallname,
         standart_price: standartPrice,
