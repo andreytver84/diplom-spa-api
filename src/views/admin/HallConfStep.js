@@ -43,7 +43,7 @@ export default function HallConfStep() {
     setHallid(halls[0].id);
   }
   //console.log(data);
-  const changeHallHandler = (id, name, index) => {
+  const changeHallHandler = (id, name) => {
     setHallid(id);
     setHallname(name);
   };

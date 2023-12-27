@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import SelectHall from "./SelectHall";
+import { useStateContext } from "../../contexts/ContentProvider";
 
 export default function HallCreateStep() {
+  const { halls } = useStateContext();
   const [hallid, setHallid] = useState();
   const [hallname, setHallname] = useState("Зал 1");
   const [standartPrice, setStandartPrice] = useState(200);
   const [vipPrice, setVipPrice] = useState(350);
   const [data, setData] = useState();
-  const [objectIndex, setObjectIndex] = useState(0);
 
   const standartInput = useRef();
   const vipInput = useRef();
@@ -16,20 +17,13 @@ export default function HallCreateStep() {
   const changeHallHandler = (id, name, index) => {
     setHallid(id);
     setHallname(name);
-    if (data && data[index]) {
-      setObjectIndex(index);
-      setStandartPrice(data[index].standart_price);
-      standartInput.current.value = data[index].standart_price;
-      setVipPrice(data[index].vip_price);
-      vipInput.current.value = data[index].vip_price;
-    }
   };
 
   const handleChangeStandartPrice = () => {
     setStandartPrice(standartInput.current.value);
 
     if (data) {
-      const index = data.findIndex((hall) => hall.hall_id == hallid);
+      const index = data.findIndex((hall) => hall.hall_id === hallid);
       const updatedData = data.map((item, indexData) =>
         indexData === index
           ? { ...item, standart_price: standartInput.current.value }
@@ -43,7 +37,7 @@ export default function HallCreateStep() {
     setVipPrice(vipInput.current.value);
 
     if (data) {
-      const index = data.findIndex((hall) => hall.hall_id == hallid);
+      const index = data.findIndex((hall) => hall.hall_id === hallid);
       const updatedData = data.map((item, indexData) =>
         indexData === index
           ? { ...item, vip_price: vipInput.current.value }
@@ -61,6 +55,7 @@ export default function HallCreateStep() {
           setStandartPrice(response.data[0]?.standart_price);
           standartInput.current.value = response.data[0]?.standart_price;
           setData(response.data);
+          console.log(response.data);
         }
         if (response.data[0]) {
           setStandartPrice(response.data[0].vip_price);
@@ -75,7 +70,26 @@ export default function HallCreateStep() {
     getFetch();
   }, []);
 
-  //console.log(hallid);
+  useEffect(() => {
+    setHallid(halls[0]?.id);
+  }, [halls]);
+
+  useEffect(() => {
+    if (hallid) {
+      const selectedHall = data?.find((hall) => hall.hall_id === hallid);
+      if (selectedHall) {
+        setStandartPrice(selectedHall.standart_price);
+        standartInput.current.value = selectedHall.standart_price;
+        setVipPrice(selectedHall.vip_price);
+        vipInput.current.value = selectedHall.vip_price;
+      } else {
+        setStandartPrice(200);
+        standartInput.current.value = 200;
+        setVipPrice(300);
+        vipInput.current.value = 300;
+      }
+    }
+  }, [hallid]);
 
   const handleSaveSubmit = (event) => {
     event.preventDefault();
@@ -98,25 +112,6 @@ export default function HallCreateStep() {
   return (
     <div className="conf-step__wrapper">
       <SelectHall ChangeHandler={changeHallHandler} />
-
-      {/* <p className="conf-step__paragraph">Выберите зал для конфигурации:</p>
-      <ul className="conf-step__selectors-box">
-        {halls.length < 1
-          ? "Нет залов"
-          : halls.map((hall, index) => (
-              <li key={hall.id + "price"}>
-                <InputHall
-                  index={index}
-                  name={hall.name}
-                  id={hall.id}
-                  isChecked={!isClicked ? index == 0 : false}
-                  onClick={() => setIsClicked(true)}
-                  onChange={changeHallHandler}
-                />
-                <span className="conf-step__selector">{hall.name}</span>
-              </li>
-            ))}
-      </ul> */}
 
       <p className="conf-step__paragraph">Установите цены для типов кресел:</p>
       <div className="conf-step__legend">
