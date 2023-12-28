@@ -41,7 +41,6 @@ export default function AddFilmForm({ addHandler }) {
           "Content-Type": "multipart/form-data",
         },
       })
-      /* .post("http://localhost:80/api/films.php", form) */
       .then(({ data }) => {
         setMessage(data.message);
         setTimeout(() => {

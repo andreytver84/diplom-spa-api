@@ -56,7 +56,6 @@ export default function HallCreateStep() {
           setStandartPrice(response.data[0]?.standart_price);
           standartInput.current.value = response.data[0]?.standart_price;
           setData(response.data);
-          console.log(response.data);
         }
         if (response.data[0]) {
           setStandartPrice(response.data[0].vip_price);

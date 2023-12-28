@@ -16,6 +16,61 @@ export default function SeansConfStep() {
   const [filmsData, setFilmsData] = useState({});
   const [sessionsData, setSessionsData] = useState([]);
 
+  console.log(sessionsData);
+
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}api/sessions.php`)
+      .then(({ data }) => {
+        if (data) {
+          let outputArray = [];
+          let tempMap = new Map();
+
+          data.forEach((item) => {
+            if (tempMap.has(item.hall_id)) {
+              // Если объект с hall_id уже существует, добавляем его в соответствующий массив
+              outputArray[tempMap.get(item.hall_id)].push(item);
+            } else {
+              // Если объекта с hall_id ещё нет, создаем новый массив и добавляем в него текущий объект
+              tempMap.set(item.hall_id, outputArray.length);
+              outputArray.push([item]);
+            }
+          });
+
+          let outputArrayFixed = outputArray.map((arr, index) => {
+            return arr.map((item) => {
+              return {
+                index: index,
+                hall_id: item.hall_id,
+                hall_name: item.hall,
+                film_title: item.film_title,
+                film_id: item.film_id,
+                film_time: item.time,
+                start_Session: item.session_start,
+              };
+            });
+          });
+
+          setSessionsData(outputArrayFixed);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  const saveSessionsHandler = (e) => {
+    e.preventDefault();
+    axios
+      .post(`${BASE_URL}api/sessions.php`, sessionsData)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const handl = () => {
     setModalActive(false);
     fetchFilms();
@@ -77,20 +132,16 @@ export default function SeansConfStep() {
 
     axios
       .delete(`${BASE_URL}api/films.php?id=${id}`)
-      .then((response) => {
-        //console.log(response.data);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error(error);
       });
   };
-  //console.log(sessionsData);
-  //console.log(films);
+
   const fetchFilms = () => {
     axios
       .get(`${BASE_URL}api/films.php`)
       .then(({ data }) => {
-        //console.log(data);
         setFilms(data);
       })
       .catch((err) => {
@@ -101,6 +152,7 @@ export default function SeansConfStep() {
   useEffect(() => {
     fetchFilms();
   }, []);
+
   return (
     <>
       <div className="conf-step__wrapper">
@@ -146,6 +198,7 @@ export default function SeansConfStep() {
           </button>
           <input
             type="submit"
+            onClick={saveSessionsHandler}
             defaultValue="Сохранить"
             className="conf-step__button conf-step__button-accent"
           />
