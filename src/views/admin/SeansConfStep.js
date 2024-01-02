@@ -9,14 +9,14 @@ import SessionHall from "./SessionHall";
 import { BASE_URL } from "../../components/apiConfig";
 
 export default function SeansConfStep() {
-  const { halls } = useStateContext();
+  const { halls, sessionsDataCtx, setSessionsDataCtx } = useStateContext();
   const [modalActive, setModalActive] = useState(false);
   const [modalActiveSeans, setModalActiveSeans] = useState(false);
   const [films, setFilms] = useState([]);
   const [filmsData, setFilmsData] = useState({});
   const [sessionsData, setSessionsData] = useState([]);
 
-  console.log(sessionsData);
+  //console.log(sessionsData);
 
   useEffect(() => {
     axios
@@ -52,6 +52,7 @@ export default function SeansConfStep() {
           });
 
           setSessionsData(outputArrayFixed);
+          setSessionsDataCtx(outputArrayFixed);
         }
       })
       .catch((err) => {
@@ -61,10 +62,11 @@ export default function SeansConfStep() {
 
   const saveSessionsHandler = (e) => {
     e.preventDefault();
+    setSessionsDataCtx(sessionsData);
     axios
       .post(`${BASE_URL}api/sessions.php`, sessionsData)
       .then(({ data }) => {
-        console.log(data);
+        //console.log(data);
       })
       .catch((err) => {
         console.error(err);
@@ -199,7 +201,7 @@ export default function SeansConfStep() {
           <input
             type="submit"
             onClick={saveSessionsHandler}
-            defaultValue="Сохранить"
+            value="Сохранить"
             className="conf-step__button conf-step__button-accent"
           />
         </fieldset>

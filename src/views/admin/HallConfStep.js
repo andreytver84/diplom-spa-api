@@ -6,7 +6,7 @@ import { useStateContext } from "../../contexts/ContentProvider";
 import { BASE_URL } from "../../components/apiConfig";
 
 export default function HallConfStep() {
-  const { halls } = useStateContext();
+  const { halls, setHallConfCtx } = useStateContext();
   const [rows, setRows] = useState(3);
   const [places, setPlaces] = useState(5);
   const [hallid, setHallid] = useState();
@@ -24,6 +24,7 @@ export default function HallConfStep() {
         if (response.data[0]) {
           setHallid(response.data[0]?.hall_id);
           setData(response.data);
+          setHallConfCtx(response.data);
         }
       })
       .catch((error) => {
@@ -66,6 +67,7 @@ export default function HallConfStep() {
       .catch((error) => {
         console.error(error);
       });
+    setHallConfCtx(newConfHall);
   };
 
   const handleResetSubmit = (event) => {

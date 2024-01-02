@@ -6,11 +6,17 @@ const StateContext = createContext({
   setToken: () => {},
   halls: null,
   setHalls: () => {},
+  sessionsDataCtx: [],
+  setSessionsDataCtx: () => {},
+  hallConfCtx: [],
+  setHallConfCtx: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
   const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
   const [halls, setHalls] = useState([]);
+  const [sessionsDataCtx, setSessionsDataCtx] = useState([]);
+  const [hallConfCtx, setHallConfCtx] = useState([]);
 
   const setToken = (token) => {
     _setToken(token);
@@ -28,6 +34,10 @@ export const ContextProvider = ({ children }) => {
         setToken,
         halls,
         setHalls,
+        sessionsDataCtx,
+        setSessionsDataCtx,
+        hallConfCtx,
+        setHallConfCtx,
       }}
     >
       {children}
