@@ -23,7 +23,7 @@ export default function OpeningStep() {
       });
     });
 
-    console.log(sessionsWithConfig);
+    //console.log(sessionsWithConfig);
 
     axios
       .post(`${BASE_URL}api/session_afisha.php`, sessionsWithConfig)
