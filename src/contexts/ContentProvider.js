@@ -10,6 +10,8 @@ const StateContext = createContext({
   setSessionsDataCtx: () => {},
   hallConfCtx: [],
   setHallConfCtx: () => {},
+  movieSession: [],
+  setMovieSession: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -17,6 +19,7 @@ export const ContextProvider = ({ children }) => {
   const [halls, setHalls] = useState([]);
   const [sessionsDataCtx, setSessionsDataCtx] = useState([]);
   const [hallConfCtx, setHallConfCtx] = useState([]);
+  const [movieSession, setMovieSession] = useState([]);
 
   const setToken = (token) => {
     _setToken(token);
@@ -38,6 +41,8 @@ export const ContextProvider = ({ children }) => {
         setSessionsDataCtx,
         hallConfCtx,
         setHallConfCtx,
+        movieSession,
+        setMovieSession,
       }}
     >
       {children}

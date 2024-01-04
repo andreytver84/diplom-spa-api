@@ -6,14 +6,26 @@ import { BASE_URL } from "../../components/apiConfig";
 export default function OpeningStep() {
   const { sessionsDataCtx, hallConfCtx } = useStateContext();
 
+  // console.log(updatedhallConf);
+  console.log(hallConfCtx);
+
   const openHandler = (event) => {
     event.preventDefault();
+
+    const updatedhallConf = hallConfCtx.map((item) => {
+      item.conf = item.conf.replace(
+        /conf-step__chair/g,
+        "buying-scheme__chair"
+      );
+      return item;
+    });
+
     //console.log(sessionsDataCtx);
     //console.log(hallConfCtx);
 
     const sessionsWithConfig = sessionsDataCtx.map((sessionGroup) => {
       return sessionGroup.map((session) => {
-        const hallConfig = hallConfCtx.find(
+        const hallConfig = updatedhallConf.find(
           (config) => config.hall_id === session.hall_id
         );
         return {

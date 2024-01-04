@@ -35,7 +35,7 @@ export default function Home() {
   useEffect(() => {
     axios(`${BASE_URL}api/session_afisha.php`)
       .then(({ data }) => {
-        console.log(data);
+        //console.log(data);
         setSessions(data);
       })
       .catch((err) => {

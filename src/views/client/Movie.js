@@ -33,6 +33,7 @@ export default function Movie(props) {
               .sort((a, b) => a.start_Session.localeCompare(b.start_Session))
               .map((item) => (
                 <MovieSession
+                  data={props.data}
                   key={item.session_id}
                   start={item.start_Session}
                   id={item.session_id}
