@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContentProvider";
 import PlaceHall from "./PlaceHall";
+import axios from "axios";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function Hall() {
   const { movieSession, setMovieSession } = useStateContext();
+  const [vip, setVip] = useState();
+  const [standart, setStandart] = useState();
 
   if (movieSession.conf) {
     localStorage.setItem("dataConf", movieSession.conf);
@@ -16,13 +20,32 @@ export default function Hall() {
     JSON.parse(JSON.parse(localStorage.getItem("dataConf")))
   );
 
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}api/priceconf.php`)
+      .then((response) => {
+        const findHall = response.data.find(
+          (hall) => hall.name === localStorage.getItem("dataHall")
+        );
+        setStandart(findHall.standart_price);
+        setVip(findHall.vip_price);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   //conf = JSON.parse(JSON.parse(JSON.parse(movieSession.conf)));
   //console.log(conf);
 
   const time = localStorage.getItem("dataTime");
 
-  const changeClassHandler = (row, place, classes) => {
-    console.log(row + " " + place + " " + classes);
+  const changeClassHandler = (row, place, classes, oldclasses) => {
+    console.log(row + " " + place + " " + classes + " " + oldclasses);
+  };
+
+  const orderHandler = () => {
+    console.log(standart + " " + vip + "ru");
   };
 
   return (
@@ -89,6 +112,7 @@ export default function Hall() {
         </div>
         <button
           className="acceptin-button"
+          onClick={orderHandler}
           /*  onclick="location.href='payment.html'" */
         >
           Забронировать

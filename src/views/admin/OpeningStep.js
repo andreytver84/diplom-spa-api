@@ -7,7 +7,7 @@ export default function OpeningStep() {
   const { sessionsDataCtx, hallConfCtx } = useStateContext();
 
   // console.log(updatedhallConf);
-  console.log(hallConfCtx);
+  //console.log(hallConfCtx);
 
   const openHandler = (event) => {
     event.preventDefault();
