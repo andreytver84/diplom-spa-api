@@ -188,6 +188,11 @@ body {
   color: #ffffff;
 }
 
+.acceptin-button:disabled {
+  background: grey;
+  opacity: 0.8;
+}
+
 .buying {
   background-color: rgba(241, 235, 230, 0.95);
   padding-bottom: 3rem;

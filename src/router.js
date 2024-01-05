@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <Hall />,
       },
       {
-        path: "/payment",
+        path: "/payment/:uniqueCode",
         element: <Payment />,
       },
       {
