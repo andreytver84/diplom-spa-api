@@ -1,6 +1,29 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../components/apiConfig";
 
 export default function Ticket() {
+  const navigate = useNavigate();
+  const [data, setData] = useState();
+  let { uniqueCode } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}api/tickets.php`, {
+        params: {
+          uniqueCode: uniqueCode,
+        },
+      })
+      .then((response) => {
+        console.log("Успешно обновлено:", response.data);
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Ошибка при обновлении:", error);
+      });
+  }, []);
+
   return (
     <main>
       <section className="ticket">

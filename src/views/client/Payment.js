@@ -1,11 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../components/apiConfig";
-import { json, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import QRCode from "react-qr-code";
 
 export default function Payment() {
+  const navigate = useNavigate();
   const [data, setData] = useState();
+  const [isClicked, setIsClicked] = useState(false);
   let { uniqueCode } = useParams();
+  console.log(uniqueCode);
   useEffect(() => {
     axios
       .get(`${BASE_URL}api/tickets.php`, {
@@ -30,11 +34,39 @@ export default function Payment() {
       price = price + Number(ticket.price);
     });
 
-    console.log(tickets);
-    console.log(price);
+    //console.log(tickets);
+    //console.log(price);
   }
 
   const time = data?.start_session.slice(0, 5);
+
+  const onClickHandler = () => {
+    /*navigate(`/ticket/${ticketsData.uniqueCode}`);*/
+    setIsClicked(true);
+  };
+
+  const backHandler = () => {
+    setIsClicked(false);
+    navigate(`/`);
+  };
+
+  const buttonBlock = (
+    <div>
+      <button
+        className="acceptin-button"
+        onClick={onClickHandler}
+        /*  onclick="location.href='ticket.html'" */
+      >
+        Получить код бронирования
+      </button>
+
+      <p className="ticket__hint">
+        После оплаты билет будет доступен в этом окне, а также придёт вам на
+        почту. Покажите QR-код нашему контроллёру у входа в зал.
+      </p>
+      <p className="ticket__hint">Приятного просмотра!</p>
+    </div>
+  );
 
   return (
     <main>
@@ -55,7 +87,7 @@ export default function Payment() {
               Места:
               <br />
               {tickets.map((ticket, i) => (
-                <span key={(uniqueCode = i)}>
+                <span key={uniqueCode + i}>
                   ряд: {ticket.row} место: {ticket.place}
                   <br />
                 </span>
@@ -64,26 +96,37 @@ export default function Payment() {
           </p>
           <p className="ticket__info">{data?.hall_name}</p>
           <p className="ticket__info">
-            Начало сеанса:{" "}
+            Начало сеанса:
             <span className="ticket__details ticket__start">{time}</span>
           </p>
           <p className="ticket__info">
-            Стоимость:{" "}
+            Стоимость:
             <span className="ticket__details ticket__cost">{price}</span> рублей
           </p>
-
-          <button
-            className="acceptin-button"
-            /*  onclick="location.href='ticket.html'" */
-          >
-            Получить код бронирования
-          </button>
-
-          <p className="ticket__hint">
-            После оплаты билет будет доступен в этом окне, а также придёт вам на
-            почту. Покажите QR-код нашему контроллёру у входа в зал.
-          </p>
-          <p className="ticket__hint">Приятного просмотра!</p>
+          {!isClicked ? (
+            buttonBlock
+          ) : (
+            <>
+              <div className="ticket__info-qr">
+                <QRCode
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                  value={`http://test-tevr.ru/payment/${uniqueCode}`}
+                />
+              </div>
+              <p className="ticket__hint">
+                Покажите QR-код нашему контроллеру для подтверждения
+                бронирования.
+              </p>
+              <p className="ticket__hint">Приятного просмотра!</p>
+              <button
+                className="acceptin-button"
+                onClick={backHandler}
+                /*  onclick="location.href='ticket.html'" */
+              >
+                Вернуться на главную
+              </button>
+            </>
+          )}
         </div>
       </section>
     </main>

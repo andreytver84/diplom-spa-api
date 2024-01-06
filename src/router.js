@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         element: <Payment />,
       },
       {
-        path: "/ticket",
+        path: "/ticket/:uniqueCode",
         element: <Ticket />,
       },
     ],
