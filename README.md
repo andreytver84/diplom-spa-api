@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# Учебное приложение кинотеатра
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### выполнил Увиков Андрей
 
-## Available Scripts
+## Приложение состоит из файлов:
 
-In the project directory, you can run:
+Репозиторий React по адресу [https://github.com/andreytver84/diplom-spa-api.git](https://github.com/andreytver84/diplom-spa-api.git)
 
-### `npm start`
+Репозиторий PHP API [https://github.com/andreytver84/diplom-php-api](https://github.com/andreytver84/diplom-php-api)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+И базы данных diplom [https://drive.google.com/file/d/1OygyK2gu7kIFCriVI2VnCjJ2M05HFjKX/view?usp=sharing](скачать)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## React
 
-### `npm test`
+Для начала работы загрузите React репозиторий, откройте консоль в папке приложения и установите зависимости npm install
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+В папке React приложения нужно зайти в папку src/components и открыть файл apiConfig.js для установки константы для соединения с нашим API
 
-### `npm run build`
+Если в режиме локальной работы то указываем const BASE_URL = "адрес своего сервера", в моём случае это было const BASE_URL = "http://localhost:80/"
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `важно`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Если делаем сборку в продакшн, то меняем адрес своего сервера на “/” т.е. const BASE_URL = “/”
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## API
 
-### `npm run eject`
+Если вы используете xampp, зайдите в папку приложения, далее папку htdocs и загрузите сюда репозиторий PHP API. Если другой софт, то в корневую папку своего сервера для работы с API
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Так как при локальной разработке приложение и API запускается с разных портов, в папке api лежит файл headers.php, в котором надо раскомментировать
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: *');
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+и закомментировать, если папка api отправляется на хостинг в корневую папку сайта
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## База данных
 
-## Learn More
+Создайте базу данных diplom и импортируйте туда загруженную базу данных
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Если все сделали правильно, то после запуска сервера и запуска приложения откроется проект в браузере.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Вход вв админку
 
-### Code Splitting
+Для входа в административную панель перейдите /adminpanel
+Логин admin@admin.ru
+Пароль admin
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+После открытия билетов, создаются записи сетки сеансов на 7 дней.
