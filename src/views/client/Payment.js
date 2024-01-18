@@ -110,7 +110,7 @@ export default function Payment() {
               <div className="ticket__info-qr">
                 <QRCode
                   style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                  value={`http://test-tevr.ru/payment/${uniqueCode}`}
+                  value={`${BASE_URL}payment/${uniqueCode}`}
                 />
               </div>
               <p className="ticket__hint">
