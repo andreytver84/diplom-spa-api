@@ -9,7 +9,8 @@ export default function Payment() {
   const [data, setData] = useState();
   const [isClicked, setIsClicked] = useState(false);
   let { uniqueCode } = useParams();
-  console.log(uniqueCode);
+  //console.log(uniqueCode);
+  let mainurl = BASE_URL === "/" ? "" : "/";
   useEffect(() => {
     axios
       .get(`${BASE_URL}api/tickets.php`, {
@@ -110,7 +111,7 @@ export default function Payment() {
               <div className="ticket__info-qr">
                 <QRCode
                   style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                  value={`${BASE_URL}payment/${uniqueCode}`}
+                  value={`${mainurl}payment/${uniqueCode}`}
                 />
               </div>
               <p className="ticket__hint">
